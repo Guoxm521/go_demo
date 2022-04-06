@@ -2,6 +2,7 @@ package routers
 
 import (
 	"example.com/m/v2/pkg/setting"
+	v1 "example.com/m/v2/routers/v1"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,5 +16,13 @@ func InitRouter() *gin.Engine {
 			"message": "test index",
 		})
 	})
+
+	apiv1 := r.Group("/api/v1")
+	{
+		apiv1.GET("/tags", v1.GetTags)
+		apiv1.POST("/tags", v1.AddTag)
+		apiv1.POST("/tags/:id", v1.EditTag)
+		apiv1.GET("/tags/:id", v1.DeleteTag)
+	}
 	return r
 }
