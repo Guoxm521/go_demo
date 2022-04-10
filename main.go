@@ -11,16 +11,17 @@ import (
 func main() {
 	router := routers.InitRouter()
 	s := &http.Server{
-		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
+		Addr:           fmt.Sprintf(":%d", setting.ServerSetting.HttpPort),
 		Handler:        router,
-		ReadTimeout:    setting.ReadTimeout,
-		WriteTimeout:   setting.WriteTimeout,
+		ReadTimeout:    setting.ServerSetting.ReadTimeout,
+		WriteTimeout:   setting.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
 	s.ListenAndServe()
 }
 
 func init() {
-	setting.SetUp()
-	models.SetUp()
+	setting.Setup()
+	fmt.Printf("32321321312：%s\n", setting.ServerSetting.RunMode)
+	models.Setup()
 }

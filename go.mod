@@ -5,14 +5,14 @@ go 1.17
 require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-ini/ini v1.66.4
+	github.com/go-playground/locales v0.14.0
+	github.com/go-playground/universal-translator v0.18.0
+	github.com/go-playground/validator/v10 v10.10.1
 	github.com/jinzhu/gorm v1.9.16
 )
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-playground/locales v0.14.0 // indirect
-	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.10.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
@@ -29,4 +29,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace pkg/setting => ../pkg/setting
+replace (
+	pkg/setting => ../pkg/setting
+	pkg/util => ../pkg/util
+)
