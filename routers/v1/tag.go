@@ -3,15 +3,37 @@ package v1
 import (
 	"example.com/m/v2/pkg/app"
 	"example.com/m/v2/pkg/e"
+	"example.com/m/v2/pkg/util"
 	"example.com/m/v2/service/tag_service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
-// GetTags 获取多个标签
-func GetTags(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "获取标签",
+// GetTagsList 获取列表
+func GetTagsList(c *gin.Context) {
+	var (
+		appG = app.Gin{C: c}
+	)
+	name := c.Query("name")
+	state := -1
+	if arg := c.Query("state"); arg != "" {
+		int, _ := strconv.Atoi(arg)
+		state = int
+	}
+	tagService := tag_service.Tag{
+		Name:     name,
+		State:    state,
+		PageNum:  util.GetPage(c),
+		PageSize: util.GetSize(c),
+	}
+	tags, err := tagService.GetAll()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_TAGS_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
+		"lists": tags,
 	})
 }
 
