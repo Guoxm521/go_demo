@@ -2,6 +2,7 @@ package app
 
 import (
 	"example.com/m/v2/pkg/e"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	zh2 "github.com/go-playground/locales/zh"
@@ -9,15 +10,17 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/go-playground/validator/v10/translations/zh"
 	"net/http"
+	"reflect"
 )
 
-func BindAndValid(c *gin.Context, form interface{}) (int, int) {
+func BindAndValid(c *gin.Context, form interface{}) (int, int, error) {
 	InitTranslate()
 	if err := c.ShouldBind(form); err != nil {
 		//todo 后面需要记录日志
-		return http.StatusInternalServerError, e.ERROR
+		fmt.Println("type:", reflect.TypeOf(err))
+		return http.StatusInternalServerError, e.ERROR, err
 	}
-	return http.StatusOK, e.SUCCESS
+	return http.StatusOK, e.SUCCESS, nil
 }
 
 var (

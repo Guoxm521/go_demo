@@ -29,7 +29,7 @@ func GetTagsList(c *gin.Context) {
 	}
 	tags, err := tagService.GetAll()
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_TAGS_FAIL, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_TAGS_FAIL, err.Error())
 		return
 	}
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
@@ -49,9 +49,9 @@ func AddTag(c *gin.Context) {
 		form AddTagForm
 		appG = app.Gin{C: c}
 	)
-	httpCode, errCode := app.BindAndValid(c, &form)
+	httpCode, errCode, err := app.BindAndValid(c, &form)
 	if errCode != e.SUCCESS {
-		appG.Response(httpCode, errCode, nil)
+		appG.Response(httpCode, errCode, err)
 	}
 	tagService := tag_service.Tag{
 		Name:      form.Name,
@@ -73,9 +73,36 @@ func EditTag(c *gin.Context) {
 	})
 }
 
+type DeleteTagForm struct {
+	ID int `form:"id" json:"id" binding:"required"`
+}
+
 // DeleteTag 删除文章标签
 func DeleteTag(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "删除标签",
-	})
+	var (
+		form DeleteTagForm
+		appG = app.Gin{C: c}
+	)
+	httpCode, errCode, err := app.BindAndValid(c, &form)
+	if errCode != e.SUCCESS {
+		appG.Response(httpCode, errCode, err.Error())
+		return
+	}
+	tagService := tag_service.Tag{
+		ID: form.ID,
+	}
+	exists, err := tagService.ExistTagByID()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG, nil)
+		return
+	}
+	if !exists {
+		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_TAG, nil)
+		return
+	}
+	if err := tagService.Delete(); err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_TAG_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, "success")
 }

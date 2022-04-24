@@ -22,6 +22,6 @@ func main() {
 
 func init() {
 	setting.Setup()
-	fmt.Printf("32321321312：%s\n", setting.ServerSetting.RunMode)
+
 	models.Setup()
 }
