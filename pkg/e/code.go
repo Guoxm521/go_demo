@@ -18,4 +18,7 @@ const (
 	ERROR_AUTH_CHECK_TOKEN_TIMEOUT = 20002
 	ERROR_AUTH_TOKEN               = 20003
 	ERROR_AUTH                     = 20004
+	EMPTY_FILE                     = 30001
+	FILE_TYPE_ERROR                = 30002
+	OUT_FILE_SIZE                  = 30003
 )

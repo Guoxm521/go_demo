@@ -11,6 +11,9 @@ var MsgFlags = map[int]string{
 	ERROR_AUTH_CHECK_TOKEN_TIMEOUT: "Token已超时",
 	ERROR_AUTH_TOKEN:               "Token生成失败",
 	ERROR_AUTH:                     "Token错误",
+	EMPTY_FILE:                     "上传文件为空",
+	FILE_TYPE_ERROR:                "格式不正确,jpeg/png/gif/jpg",
+	OUT_FILE_SIZE:                  "文件格式超出大小限制",
 }
 
 func GetMsg(code int) string {
