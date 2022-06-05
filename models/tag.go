@@ -47,7 +47,7 @@ func GetTags(pageNum int, pageSize int, maps interface{}) ([]Tag, error) {
 func ExistTagByID(id int) (bool, error) {
 	var tag Tag
 	err := db.Select("id").Where("id = ? AND deleted_on = ?", id, 0).First(&tag).Error
-	//defer db.Close()
+	defer db.Close()
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
